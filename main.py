@@ -13,7 +13,7 @@ bgfile = "GW_data/wave_O3_K99_C01_LH_BurstLF_BKG_run1_M2_V_hvetoLH_background.cs
 # load data
 fgslices, bgslices = dataLoader(fgfile, bgfile)
 
-# test parameters
+# test params
 maxSeq = 5
 distanceWindow = 100 # degrees
 timeWindow = 500 # seconds, around 8 minutes
