@@ -48,3 +48,23 @@ def getPrimes(a, b):
     primesList.append(sp.prime(i))
 
   return primesList
+
+
+def linear(a, b):
+  '''
+  Generates a list of ones of length b - a + 1. For example, linear(1, 3)
+  returns [1,1,1].
+
+  Note: this function is effectively numpy.ones(), however it is in the correct format 
+        to be taken in by the likelihood function found in likelihood_functions.py
+
+  Params:     a, b: range of ones to generate 
+  Returns:    list of ones
+  '''
+
+  output = []
+
+  for i in range(a, b+1):
+    output.append(1)
+
+  return output
