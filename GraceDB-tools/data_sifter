@@ -1,0 +1,137 @@
+from pandas import DataFrame
+
+def remove_consecutive_data(df,min_event_separation, verbose = False):
+    '''
+    :param df: pandas dataframe that has a colum with header 'gpstime'
+    
+    :param min_event_separation: the separation in 'gpstime' you would like your data to be reduced down to
+    
+    :param verbose: do you want to see your codes progress? if so set verbose = True
+    
+    :return: dataframe that has no data points that ar within min_event_separation of each other 
+            - except for the first value of the rpeating time series
+    '''
+    
+    df = df.sort_values(by='gpstime', ignore_index=True)
+    df_reduced = DataFrame(columns=df.columns)
+    last_time = 0
+    n = 0
+    for ith_time in df['gpstime']:
+
+        if ith_time - last_time > min_event_separation: # if time difference between consecutive data points is 
+                                                        # greater then a given separation then a pass is given (check = 0)
+            check = 0
+
+        else:
+            check = 1
+
+        if check == 0:
+            df_reduced = df_reduced._append(df.iloc[n], ignore_index=True)
+        else:
+            if verbose:
+                print('removed data point',n, 'as separation from last point was', ith_time - last_time)
+        n += 1
+        if verbose:
+            print(n)
+        last_time = ith_time
+
+    return df_reduced
+'''
+#how to load in data from a .pickle file
+with open('/Users/PycharmProjects/LIGO summer project 2024/Event&Superevent_Data/group:Burst_cwb_search:Allsky_created:2023-05-24..2024-01-16.pickle', 'rb') as f:
+    data = pickle.load(f)
+data = pd.json_normalize(data)
+'''
+def veiw_headers_in_cpoypaste_format(pd_DataFrame, max_header_displayed):
+    
+    '''
+    
+    :param pd_DataFrame: pandas dataframe that you wish to see the headers of
+    :param max_header_displayed: max header shown (could be useful if there is a limit to the number of headers you can print)
+    :return: prints the headers in a comma separated list (that can be copied into a list)
+    '''
+    n = 0
+    for i in pd_DataFrame:
+        print("'"+i+"',")
+        n += 1
+        if n == max_header_displayed:
+            break
+            
+            
+
+# the columns that have useful information for us from the matched filter piplines in GraceDB (as of 19/07/2024)
+columns_we_like_matched_filter = ['submitter',
+'created',
+'group',
+'graceid',
+'pipeline',
+'gpstime',
+'reporting_latency',
+'instruments',
+'nevents',
+'offline',
+'search',
+'far',
+'far_is_upper_limit',
+'likelihood',
+'labels',
+'extra_attributes.CoincInspiral.ifos',
+'extra_attributes.CoincInspiral.end_time',
+'extra_attributes.CoincInspiral.end_time_ns',
+'extra_attributes.CoincInspiral.mass',
+'extra_attributes.CoincInspiral.mchirp',
+'extra_attributes.CoincInspiral.minimum_duration',
+'extra_attributes.CoincInspiral.snr',
+'extra_attributes.CoincInspiral.false_alarm_rate',
+'extra_attributes.CoincInspiral.combined_far',
+'extra_attributes.SingleInspiral']
+
+
+# the columns that have useful information for us from the Coherent Wave Burst cwb pipline in GraceDB (as of 19/07/2024)
+columns_we_like_cwb = ['submitter',
+'created',
+'group',
+'graceid',
+'pipeline',
+'gpstime',
+'reporting_latency',
+'instruments',
+'nevents',
+'offline',
+'search',
+'far',
+'far_is_upper_limit',
+'likelihood',
+'labels',
+'superevent',
+'extra_attributes.MultiBurst.ifos',
+'extra_attributes.MultiBurst.start_time',
+'extra_attributes.MultiBurst.start_time_ns',
+'extra_attributes.MultiBurst.duration',
+'extra_attributes.MultiBurst.strain',
+'extra_attributes.MultiBurst.peak_time',
+'extra_attributes.MultiBurst.peak_time_ns',
+'extra_attributes.MultiBurst.central_freq',
+'extra_attributes.MultiBurst.bandwidth',
+'extra_attributes.MultiBurst.amplitude',
+'extra_attributes.MultiBurst.mchirp',
+'extra_attributes.MultiBurst.snr',
+'extra_attributes.MultiBurst.confidence',
+'extra_attributes.MultiBurst.false_alarm_rate',
+'extra_attributes.MultiBurst.ligo_axis_ra',
+'extra_attributes.MultiBurst.ligo_axis_dec',
+'extra_attributes.MultiBurst.ligo_angle',
+'extra_attributes.MultiBurst.ligo_angle_sig',
+'extra_attributes.MultiBurst.single_ifo_times',
+'extra_attributes.MultiBurst.hoft',
+'extra_attributes.MultiBurst.code',]
+
+'''
+# how to get only the columns you want from a DataFrame
+df = data[columns_we_like_cwb]
+
+# this is the data with the elements that were too close together removed
+df_thinned = remove_consecutive_data(df,1, verbose = True) 
+'''
+
+
