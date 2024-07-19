@@ -1,0 +1,29 @@
+
+from ligo.gracedb.rest import GraceDb
+import pickle
+import pandas as pd
+
+'''
+Information for gaining access (pass key) to GraceDB API can be found at: https://computing.docs.ligo.org/guide/auth/x509/#ligo
+  (ligo.org login details required)
+Information for searching GraceDB events can be found at: https://gracedb.ligo.org/documentation/queries.html#by-group-pipeline-and-search
+
+'''
+client = GraceDb()
+
+to_be_saved = []
+
+#search string in client.events() is identical to GraceDB website search requirements
+event_iterator = client.events('group: Burst cwb search: Allsky created: 2023-05-24 ..  2024-01-16', count = 100) 
+print(event_iterator)
+n = 0
+for event in event_iterator: #LINE FOR GETTING DATA URL # gets events as json
+    print(n)
+    #unit = [event['graceid'],event['labels'], event['far'], event['gpstime']]
+    unit = event
+    to_be_saved.append(unit)
+    n += 1
+
+
+with open("File_to_be_saved_location", 'wb') as f:
+    pickle.dump(to_be_saved, f)
