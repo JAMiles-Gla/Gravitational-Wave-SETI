@@ -1,0 +1,35 @@
+import numpy as np
+from pandas import DataFrame
+import random
+
+def full_sky_noise_model(rate, timelength, data_start_time = 0):
+    '''
+    :param rate: the average rate in events per seconds you want your noise model to generate
+    :param timelength: the length of time you want the noise model to be for
+    :param data_start_time: on optional parameter that makes you noise model begin at a particular time
+            (could be useful if you want to compare to a gps time series on the same graph)
+    :return: A data from with the columns 'phi0': right ascension in degrees, 'theta0': declination in in degrees,
+            'time0': time series in seconds
+    '''
+
+    #creating lists to save random numbers in
+    RA_deg = []
+    DEC_deg = []
+    time_data = []
+    time_stamp = 0
+
+    while time_stamp < timelength:
+        random_time = np.random.exponential(1/rate)
+        time_stamp += random_time
+        RA = random.uniform(-1, 1) * 180
+
+        holder = random.uniform(-1, 1) # gives random values between -1 and 1
+        #print(holder)
+        DEC = np.arcsin(holder)*180/np.pi # scales the uniform distribution to the proper distribution for declination
+                                          # (preventing incresed data point dencity at the poles)
+        #print(DEC)
+        RA_deg.append(RA)
+        DEC_deg.append(DEC)
+        time_data.append(time_stamp)
+
+    return DataFrame({'phi0': RA_deg, 'theta0': DEC_deg, 'time0': np.array(time_data) + data_start_time})
