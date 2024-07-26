@@ -50,7 +50,7 @@ Extra functionality of likelihood function:
 Further improvements to be made to the code:
   Creating a bank of sequences to search that would mimic the stretching in a periodic signal during the year (which will compensate for not having sky positions).
   Changing the sequence model in the code to only stretch over a set sequence amount (as this is more likely to find Astrophysical signals). 
-  Designing the code so that it can be run on a GPU to reduce the large computation times (pandas can be run on an INVIDA GUP using the cuDF package)
+  Designing the code so that it can be run on a GPU to reduce the large computation times (pandas can be run on an INVIDA GP using the cuDF package)
   Create a new likelihood approximation that can deal with a large number of data points and background data points.
   Create a single likelihood statistic that can be used to judge (against a population of noise models) the significance of a piece of data.
   Include other parameters that can be used to constrain the search and decrease computational times (such as false alarm rate of a signal or chirp mass of a gravitational wave candidate).
